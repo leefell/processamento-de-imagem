@@ -1,0 +1,25 @@
+[theme]
+base = "light"
+primaryColor = "#0071E3"
+backgroundColor = "#F5F5F7"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#1D1D1F"
+borderColor = "#D2D2D7"
+showWidgetBorder = false
+baseRadius = "12px"
+baseFontSize = 16
+# Inter é o substituto mais próximo da SF Pro fora do Mac; estilo.css prefere a fonte do sistema.
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap, sans-serif"
+greenColor = "#34C759"
+redColor = "#FF3B30"
+orangeColor = "#FF9F0A"
+blueColor = "#0071E3"
+
+[client]
+toolbarMode = "minimal"
+
+[server]
+maxUploadSize = 25
+
+[browser]
+gatherUsageStats = false

@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.playwright-mcp/
+/folha_de_respostas.pdf
+/folha_de_respostas.png
+build/
