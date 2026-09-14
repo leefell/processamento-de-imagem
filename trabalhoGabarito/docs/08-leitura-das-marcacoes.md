@@ -120,6 +120,9 @@ Por que esses valores?
 - **50%**: um preenchimento "de verdade" cobre quase todo o miolo; exigir pelo menos metade dá margem para
   preenchimentos imperfeitos.
 - Os dois ficam em constantes no topo de `marcacoes.py`, fáceis de ajustar depois de testar com folhas reais.
+- `LIMITE_MARCADO` também pode ser ajustado **sem mexer no código**: o expander "Ajustes avançados" do app tem um
+  slider que passa esse valor para `ler_folha(..., limite_marcado=...)`, usado tanto no gabarito oficial quanto na
+  folha do aluno (ver capítulo 10.1). `LIMITE_VAZIO` continua fixo em 0.15.
 
 ### 8.7 Passo 4: regras de cada questão
 

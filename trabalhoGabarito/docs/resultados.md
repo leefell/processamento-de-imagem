@@ -44,5 +44,6 @@ Gerado por `python scripts/avaliar.py amostras/sinteticas`. O detalhe está em [
   que erre bastante ou devolva confiança baixa (o app mostra "confiança baixa").
 - **Marcador cortado ou coberto:** sem os 4 cantos a folha não é alinhada, e o app pede outra foto.
 - **Marca muito leve** (lápis, caneta falhando) pode ficar abaixo de 15% e ser lida como em branco.
-  Os limites ficam em `gabarito/marcacoes.py` (`LIMITE_VAZIO`, `LIMITE_MARCADO`).
+  Os limites ficam em `gabarito/marcacoes.py` (`LIMITE_VAZIO`, `LIMITE_MARCADO`); `LIMITE_MARCADO` também dá para
+  ajustar sem mexer em código, pelo slider em "Ajustes avançados" no app.
 - **Um X ou traço fino** pode passar abaixo de 15% e contar como em branco em vez de anulada.

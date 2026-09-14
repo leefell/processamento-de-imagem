@@ -10,8 +10,9 @@
 - Explique: cada marcador tem um número, então o programa sabe qual canto é qual, mesmo com a folha girada.
 
 ## 2. Gabarito oficial (1 min)
-- Envie a foto da folha-mestre e aponte as pílulas com as 8 respostas.
-- Mencione a alternativa por arquivo JSON.
+- Selecione as 8 respostas certas direto na tela (modo padrão) e mostre a pré-visualização da folha antes de
+  confirmar; aponte as pílulas com o resultado.
+- Mencione as alternativas por foto/PDF da folha-mestre e por arquivo JSON.
 
 ## 3. Aluno normal (2 min)
 - Envie a foto e mostre o placar e a réplica da folha (contorno = oficial, preenchida = aluno).
@@ -23,6 +24,8 @@
 ## 4. Casos de anulação (1 min)
 - Marcação dupla → "Anulada, marcou mais de uma".
 - X ou meio preenchido → "Anulada, marcação incompleta" (entre 15% e 50% de tinta).
+- Se sobrar tempo: abra **Ajustes avançados** e mostre o slider de sensibilidade mudando um X de "dúvida" para
+  "marcado" ao vivo — bom gancho para falar de limiarização/Otsu.
 
 ## 5. Robustez (1 min)
 - Foto girada ou de cabeça para baixo, com sombra → mesma nota.

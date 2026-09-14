@@ -63,9 +63,18 @@ ficar abaixo de 15% e ser lido como em branco, uma limitação conhecida. → [C
 O rabisco, se passar de 15%, é "dúvida", e a questão é anulada. Foi uma decisão do grupo: não dá para saber se o
 rabisco era uma segunda resposta. → [Cap. 8.7](08-leitura-das-marcacoes.md)
 
+**Precisa fotografar a folha-mestre para informar o gabarito oficial?**
+Não. A forma padrão no app é selecionar a alternativa de cada questão direto na tela (sem foto, sem risco de erro de
+leitura); foto/PDF e arquivo JSON continuam disponíveis como alternativas. → [Cap. 10.1](10-correcao-e-interface.md)
+
 **Por que 15% e 50%?**
 15% fica bem acima de um quadrado vazio (0%) e abaixo de um X normal; 50% exige um preenchimento de verdade com
 margem para imperfeições. São constantes fáceis de ajustar depois dos testes com fotos reais.
+→ [Cap. 8.6](08-leitura-das-marcacoes.md)
+
+**Dá para mudar esses 50% sem mexer no código?**
+Sim: o expander "Ajustes avançados" do app tem um slider que ajusta o `limite_marcado` na hora, para o gabarito
+oficial e para a folha do aluno. Serve para folhas com marcação mais fraca (ex.: X em vez do quadrado todo pintado).
 → [Cap. 8.6](08-leitura-das-marcacoes.md)
 
 ## Sobre o OCR

@@ -162,4 +162,13 @@ div[class*="st-key-link"] button:hover { color: #0077ED; text-decoration: underl
   .bolha { width: 2rem; height: 2rem; font-size: .8rem; }
   .bolhas { gap: .35rem; }
   .linha { gap: .6rem; grid-template-columns: 1.5rem auto 1fr; }
+
+  /* grade de seleção manual do gabarito: uma questão por linha em telas pequenas */
+  div[class*="st-key-grupo_oficial"] [data-testid="stHorizontalBlock"] {
+    flex-wrap: wrap;
+  }
+  div[class*="st-key-grupo_oficial"] [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+    min-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
 }

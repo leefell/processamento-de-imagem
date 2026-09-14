@@ -1,6 +1,7 @@
 """Geração de folhas preenchidas e "fotos" sintéticas com resposta conhecida.
 
-Ferramenta de testes e de avaliação (scripts/gerar_amostras.py); não é usada pelo app.
+Ferramenta de testes e de avaliação (scripts/gerar_amostras.py). `folha_preenchida` também é usada pelo
+app para pré-visualizar o gabarito quando as respostas são selecionadas manualmente (sem foto).
 """
 
 from __future__ import annotations

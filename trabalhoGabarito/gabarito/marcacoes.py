@@ -57,10 +57,15 @@ def mascara_tinta(folha_bgr: np.ndarray) -> np.ndarray:
     return etapas_mascara(folha_bgr).mascara
 
 
-def classificar(preenchimento: float) -> EstadoCelula:
-    if preenchimento <= LIMITE_VAZIO:
+def classificar(
+    preenchimento: float,
+    *,
+    limite_vazio: float = LIMITE_VAZIO,
+    limite_marcado: float = LIMITE_MARCADO,
+) -> EstadoCelula:
+    if preenchimento <= limite_vazio:
         return EstadoCelula.VAZIO
-    if preenchimento >= LIMITE_MARCADO:
+    if preenchimento >= limite_marcado:
         return EstadoCelula.MARCADO
     return EstadoCelula.DUVIDA
 
@@ -108,8 +113,18 @@ def medir_preenchimento(mascara: np.ndarray, quadrado: Rect) -> float:
     return float(np.count_nonzero(regiao)) / regiao.size if regiao.size else 0.0
 
 
-def ler_marcacoes(folha_bgr: np.ndarray) -> list[Questao]:
-    """Lê as 8 questões de uma folha já alinhada ao tamanho padrão."""
+def ler_marcacoes(
+    folha_bgr: np.ndarray,
+    *,
+    limite_vazio: float = LIMITE_VAZIO,
+    limite_marcado: float = LIMITE_MARCADO,
+) -> list[Questao]:
+    """Lê as 8 questões de uma folha já alinhada ao tamanho padrão.
+
+    `limite_marcado` é a fração mínima de tinta (0–1) dentro do quadrado para considerá-lo
+    marcado; ajustável pela interface para folhas com traço mais fraco (ex.: X em vez de
+    preenchimento total).
+    """
     mascara = mascara_tinta(folha_bgr)
     questoes = []
     for numero in layout.QUESTOES:
@@ -117,7 +132,8 @@ def ler_marcacoes(folha_bgr: np.ndarray) -> list[Questao]:
         for alternativa in layout.ALTERNATIVAS:
             quadrado = localizar_quadrado(mascara, layout.celula(numero, alternativa))
             preenchimento = medir_preenchimento(mascara, quadrado)
-            celulas.append(Celula(numero, alternativa, preenchimento, classificar(preenchimento), quadrado))
+            estado = classificar(preenchimento, limite_vazio=limite_vazio, limite_marcado=limite_marcado)
+            celulas.append(Celula(numero, alternativa, preenchimento, estado, quadrado))
         status, letra = status_questao([c.estado for c in celulas])
         questoes.append(Questao(numero, status, letra, tuple(celulas)))
     return questoes
