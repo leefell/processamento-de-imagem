@@ -100,7 +100,7 @@ trabalhoGabarito/
 │   ├── visualizacao.py     ← imagem "grade detectada"
 │   ├── interface_html.py   ← HTML do resultado (placar, réplica da folha)
 │   ├── modelos.py          ← estruturas de dados (Questao, Resultado...)
-│   └── sintetico.py        ← gera folhas e fotos falsas para testes
+│   └── sintetico.py        ← gera folhas e fotos falsas para testes (e a pré-visualização do gabarito manual)
 ├── scripts/                ← ferramentas de linha de comando
 ├── tests/                  ← testes automatizados (pytest)
 ├── amostras/               ← imagens de exemplo

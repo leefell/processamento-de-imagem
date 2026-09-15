@@ -26,7 +26,8 @@ Abre em http://localhost:8501. Guia completo, dicas de impressão e solução de
 ## Uso
 
 1. Imprima a folha (botão **Baixar folha para imprimir** no app ou `python scripts/gerar_folha.py`).
-2. Envie a foto/PDF da **folha-mestre** (ou um JSON `{"1": "A", ..., "8": "D"}`).
+2. Informe o **gabarito oficial**: selecione a alternativa de cada questão na própria interface (mais rápido), ou
+   envie a foto/PDF da folha-mestre, ou um JSON `{"1": "A", ..., "8": "D"}`.
 3. Envie a foto/PDF da **folha do aluno** e veja a nota.
 
 Sem impressora? `python scripts/gerar_amostras.py` gera fotos sintéticas e um PDF em `amostras/sinteticas/`.
@@ -57,5 +58,5 @@ Sem impressora? `python scripts/gerar_amostras.py` gera fotos sintéticas e um P
 | `gabarito/leitura.py` | `ler_folha()`: junta alinhamento, marcações e OCR |
 | `gabarito/visualizacao.py` | Imagem "grade detectada" |
 | `gabarito/interface_html.py`, `estilo.css`, `app.py` | Interface Streamlit |
-| `gabarito/sintetico.py` | Folhas e fotos sintéticas para testes |
+| `gabarito/sintetico.py` | Folhas e fotos sintéticas para testes; também gera a pré-visualização do gabarito manual |
 | `docs/` | Documentação, roteiro da apresentação e resultados |

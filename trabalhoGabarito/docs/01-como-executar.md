@@ -69,12 +69,14 @@ O navegador abre sozinho em **http://localhost:8501**. Se não abrir, copie esse
 
 ```mermaid
 flowchart TD
-    A["① Gabarito oficial"] -->|foto/PDF da folha-mestre<br>ou arquivo JSON| B["② Folha do aluno"]
+    A["① Gabarito oficial"] -->|selecionar A-D de cada questão,<br>foto/PDF da folha-mestre<br>ou arquivo JSON| B["② Folha do aluno"]
     B -->|foto ou PDF| C["③ Resultado: X de 8"]
     C -->|Corrigir outra folha| B
 ```
 
 1. **Gabarito oficial**: escolha uma das formas:
+   - **Selecionar alternativas** (padrão, mais rápido): marque a letra certa das 8 questões direto na tela. Uma
+     pré-visualização mostra a folha com as marcações antes de confirmar.
    - **Foto ou PDF da folha-mestre**: uma folha preenchida com as respostas certas. Ela precisa ter **exatamente uma
      alternativa bem preenchida por questão**; se não tiver, o app recusa e diz quais questões conferir.
    - **Arquivo JSON**: um arquivo de texto assim:
@@ -87,6 +89,13 @@ flowchart TD
 
 O gabarito oficial fica guardado enquanto a aba estiver aberta; dá para corrigir várias folhas seguidas.
 **Recarregar a página (F5) apaga o gabarito**, e ele precisa ser enviado de novo.
+
+### Ajustando a sensibilidade da marcação
+
+No topo da página, o expander **"Ajustes avançados"** tem um controle deslizante que move o `LIMITE_MARCADO`
+(capítulo 8.6) sem precisar mexer em código: quanto menor o valor, menos tinta é preciso para um quadrado contar
+como "marcado" (útil se alguém usou X em vez de pintar o quadrado inteiro). O valor vale tanto para o gabarito
+oficial quanto para a folha do aluno — mude **antes** de enviar as folhas (ou reenvie depois de mudar).
 
 ## 1.5 Imprimir e preencher a folha
 
@@ -165,5 +174,5 @@ Mais detalhes no [capítulo 11](11-testes.md).
 | `Port 8501 is already in use` | O app já está aberto em outro terminal | Feche o outro ou use `--server.port 8502` |
 | Primeira correção muito lenta | Carregando o modelo do OCR | Normal; as próximas são rápidas |
 | Nome lido errado, "confiança baixa" | Limitação do OCR com letra de mão (principalmente cursiva) | Esperado; veja o [capítulo 9](09-ocr.md) |
-| Marcação feita a lápis não aparece | Traço claro demais | Use caneta; ou ajuste os limites (capítulo 8) |
+| Marcação feita a lápis não aparece | Traço claro demais | Use caneta; ou baixe a sensibilidade em **Ajustes avançados** (ou os limites no código, capítulo 8) |
 | Erro ao instalar o `easyocr`/`torch` | Internet caiu ou pouco espaço | Rode o `pip install` de novo |

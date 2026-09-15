@@ -113,3 +113,27 @@ Um roteiro prático, do mais simples ao mais profundo:
 | Transformações geométricas | `alinhar` (homografia), `sintetico.fotografar` (rotação, perspectiva) |
 | Interpolação | `warpPerspective` (bilinear), `resize` (área e bicúbica) |
 | Segmentação e contornos | `localizar_quadrado` (`findContours`, `boundingRect`) |
+
+## 12.6 Sessão de acompanhamento (depois da primeira entrega)
+
+Depois da implementação inicial, o grupo pediu ajustes de UX usando o **Claude Code** dentro do próprio terminal (não
+mais só a entrevista inicial). Registro dos pedidos e do que foi feito:
+
+| Pedido do grupo | O que foi feito |
+|---|---|
+| Rodar o projeto num Mac (o guia só tinha Windows) | Instalado Python 3.12 via Homebrew (a `.venv` do projeto pede essa versão) |
+| Um comando único para subir o app, tipo `npm run dev` | Script `run.sh` |
+| Marcação fraca (X) sendo anulada por ficar abaixo de 50% de tinta | `limite_marcado` virou parâmetro opcional em `classificar`, `ler_marcacoes` e `ler_folha` (valor padrão preservado, testes não mudaram) + slider "Ajustes avançados" no app |
+| Ver a "grade detectada" também para o gabarito oficial (só aparecia em erro) | A leitura da folha-mestre passou a ficar em `st.session_state` (antes era descartada após o `st.rerun()`) |
+| Informar o gabarito sem precisar de foto | Terceiro modo "Selecionar alternativas": 8 `st.segmented_control`, com pré-visualização gerada por `sintetico.folha_preenchida` |
+| Grade de 4 colunas ficou ruim no celular | Reduzida para 3 colunas |
+| Última linha (2 questões) não alinhava com as colunas de cima | O bug era usar `st.columns(2)` só nessa linha; a correção é sempre criar `st.columns(3)` e deixar a sobra vazia |
+
+**Um problema à parte, não de código:** depois de editar `gabarito/leitura.py` com o app já aberto, o Streamlit deu
+`TypeError: ler_folha() got an unexpected keyword argument`. Não era um bug da mudança — era o interpretador do app
+ainda com o módulo antigo em memória (o próprio capítulo 1 já avisa disso). A correção foi reiniciar o processo do
+zero, não mudar código.
+
+**O que o grupo decidiu aqui:** manter "Selecionar alternativas" como padrão (mais rápido que foto), mas sem remover
+as outras duas formas; e limitar o ajuste de sensibilidade a `LIMITE_MARCADO` (deixando `LIMITE_VAZIO` fixo), por ser
+o limite que gera o problema mais comum em apresentação (marcação fraca sendo anulada).

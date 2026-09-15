@@ -5,10 +5,24 @@ aplicativo web funciona.
 
 ## 10.1 O gabarito oficial
 
-O gabarito oficial é, no fim, um dicionário simples: `{1: "A", 2: "C", ..., 8: "B"}`. Ele pode vir de dois lugares
-(`gabarito/correcao.py`):
+O gabarito oficial é, no fim, um dicionário simples: `{1: "A", 2: "C", ..., 8: "B"}`. Ele pode vir de três lugares:
 
-### Da foto/PDF de uma folha-mestre
+### Selecionando as alternativas na interface
+
+A forma padrão no app: 8 `st.segmented_control`, um por questão, em `app.py`. Nenhuma imagem é processada — é só
+um `dict` montado diretamente das escolhas:
+
+```python
+respostas[numero] = st.segmented_control(f"Questão {numero}", layout.ALTERNATIVAS, key=f"manual_{numero}_...")
+...
+estado.oficial = dict(sorted(respostas.items()))
+```
+
+Como não há leitura de foto, não existe risco de o algoritmo errar a leitura do próprio gabarito — só falta digitar
+certo. Para dar uma conferência visual antes de confirmar, o app gera uma pré-visualização com `sintetico.folha_preenchida`
+(o mesmo gerador usado para criar fotos de teste — capítulo 11), desenhando as marcas escolhidas na folha padrão.
+
+### Da foto/PDF de uma folha-mestre (`gabarito/correcao.py`)
 
 A folha-mestre passa **pelo mesmo `ler_folha`** de uma folha de aluno. A diferença é a **validação**: todas as 8
 questões precisam ter saído como **respondida**:
@@ -86,15 +100,16 @@ estado.oficial = gabarito_de_leitura(leitura_mestre)
 
 ```python
 @st.cache_data(show_spinner=False, max_entries=20)
-def ler_aluno(dados: bytes):
-    return ler_folha(carregar_imagem(dados), ocr=leitor_ocr())
+def ler_aluno(dados: bytes, limite_marcado: float):
+    return ler_folha(carregar_imagem(dados), ocr=leitor_ocr(), limite_marcado=limite_marcado)
 
 @st.cache_resource(show_spinner=False)
 def leitor_ocr():
     return LeitorOCR()
 ```
 
-- `cache_data`: se os **bytes do arquivo** forem os mesmos, devolve o resultado guardado sem processar de novo.
+- `cache_data`: se os **bytes do arquivo e o `limite_marcado`** forem os mesmos, devolve o resultado guardado sem
+  processar de novo; mudar o slider de sensibilidade força uma nova leitura, porque o argumento muda.
 - `cache_resource`: guarda **um único objeto** para o app todo; aqui, o modelo do OCR, que é pesado.
 
 **3. Como "limpar" um campo de upload?** Um widget do Streamlit é identificado pela sua `key`. Para o botão
@@ -114,7 +129,7 @@ if st.button("Corrigir outra folha"):
 stateDiagram-v2
     [*] --> SemGabarito
     SemGabarito --> SemGabarito: arquivo inválido<br>(mostra erro)
-    SemGabarito --> ComGabarito: folha-mestre ou JSON válido
+    SemGabarito --> ComGabarito: respostas marcadas,<br>folha-mestre ou JSON válido
     ComGabarito --> Resultado: envia folha do aluno
     Resultado --> ComGabarito: Corrigir outra folha
     ComGabarito --> SemGabarito: Trocar gabarito
@@ -132,6 +147,10 @@ O resultado é um HTML gerado por `gabarito/interface_html.py` e estilizado por 
   - **bolinha preenchida** = marcada pelo aluno; **verde** se certa, **vermelha** se errada, **laranja** se anulada;
   - **listrada em laranja** = marcação em dúvida.
 - **Ver processamento**: as abas *Grade detectada* (capítulo 8), *Folha alinhada* (capítulo 6) e *Arquivo original*.
+  Aparece tanto para a folha do aluno quanto para o gabarito oficial **quando ele veio de foto/PDF** — a leitura
+  fica guardada em `st.session_state.leitura_mestre` para não se perder no próximo rerun (item 1 acima). No modo
+  "Selecionar alternativas" não há o que detectar, então só a pré-visualização gerada aparece, em "Ver folha do
+  gabarito".
 
 Dois cuidados técnicos:
 - **O HTML é gerado por uma função pura**, que recebe o `Resultado` e devolve texto, sem depender do Streamlit. Por
