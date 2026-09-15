@@ -3,6 +3,29 @@
 Tudo abaixo foi testado no **Windows 11** com **PowerShell**. Os comandos devem ser rodados dentro da pasta
 `trabalhoGabarito`.
 
+## 0. Execução com Docker (Mais Simples)
+
+Se você tem o **Docker Desktop** instalado, não precisa configurar Python, PyTorch ou ambiente virtual na máquina:
+
+```powershell
+# Subir a aplicação (constrói a imagem e inicia o serviço)
+docker compose up --build
+
+# Para rodar em segundo plano:
+# docker compose up -d --build
+
+# Para parar:
+# docker compose down
+```
+
+O aplicativo estará acessível em **http://localhost:8501**.
+
+> 💡 **Vantagens do Docker:**
+> - Os modelos do EasyOCR já são baixados durante o build da imagem, sem espera na primeira execução.
+> - Dependências de sistema (OpenMP, bibliotecas do OpenCV, fontes DejaVu) vêm pré-configuradas e isoladas.
+> - O PyTorch utiliza versão CPU otimizada, reduzindo o consumo de disco.
+
+
 ## 1.1 Pré-requisitos
 
 | O quê | Por quê |

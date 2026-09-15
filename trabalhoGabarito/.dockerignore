@@ -1,0 +1,16 @@
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.playwright-mcp/
+build/
+dist/
+.git/
+.gitignore
+folha_de_respostas.pdf
+folha_de_respostas.png
+.DS_Store
+Thumbs.db

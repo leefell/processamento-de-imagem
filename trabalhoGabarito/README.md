@@ -8,7 +8,24 @@ com sombra, e impressões com quadrados de tamanhos diferentes.
 
 Design: [specs/2026-09-13-corretor-gabarito-design.md](specs/2026-09-13-corretor-gabarito-design.md)
 
-## Começo rápido (Windows)
+## Começo rápido
+
+### Opção 1: Via Docker (Recomendado)
+
+Não precisa instalar Python, PyTorch ou dependências locais:
+
+```bash
+docker compose up --build
+```
+
+Acesse em **http://localhost:8501**. Os modelos do EasyOCR já são baixados durante o build da imagem, então a primeira correção já roda sem lentidão!
+
+Para parar:
+```bash
+docker compose down
+```
+
+### Opção 2: Local (Windows)
 
 ```powershell
 winget install Python.Python.3.12        # se ainda não tiver Python
@@ -20,7 +37,7 @@ py -3.12 -m venv .venv
 Abre em http://localhost:8501. Guia completo, dicas de impressão e solução de problemas:
 [docs/01-como-executar.md](docs/01-como-executar.md).
 
-> O EasyOCR baixa os modelos no primeiro uso, e a primeira correção leva ~20–30 s. Corrija uma folha qualquer
+> Na execução local sem Docker, o EasyOCR baixa os modelos no primeiro uso (~20–30 s). Corrija uma folha qualquer
 > **antes** da apresentação.
 
 ## Uso
