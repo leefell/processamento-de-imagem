@@ -64,7 +64,6 @@ def converter(nome: str, texto: str) -> tuple[str, str, list[tuple[str, str]]]:
 
     for i, codigo in enumerate(diagramas):
         dados = base64.b64encode(codigo.encode("utf-8")).decode()
-        # diagramas pequenos ficam mais baixos para caberem no fim da página em vez de deixá-la vazia
         tamanho = "grande" if codigo.count("\n") > 12 else "pequeno"
         corpo = corpo.replace(
             f'<div class="mermaid-slot" data-i="{i}"></div>', f'<figure class="mermaid {tamanho}" data-src="{dados}"></figure>'
@@ -76,14 +75,11 @@ def converter(nome: str, texto: str) -> tuple[str, str, list[tuple[str, str]]]:
         h2s += [(filho["id"], filho["name"]) for filho in item["children"]]
     corpo = re.sub(r"<h1[^>]*>.*?</h1>", "", corpo, count=1, flags=re.S)
 
-    # links entre capítulos viram âncoras internas; links para fora da pasta docs viram texto
     corpo = LINK_MD.sub(lambda m: f'href="#{ancora(m.group(1))}"', corpo)
     corpo = re.sub(r'<a href="\.\./[^"]*">(.*?)</a>', r"\1", corpo)
     corpo = re.sub(r'<a href="img/">(.*?)</a>', r"\1", corpo)
-    # figuras: imagem sozinha num parágrafo, com a legenda em itálico logo abaixo
     corpo = corpo.replace('src="img/', f'src="{(DOCS / "img").as_uri()}/')
     def figura_com_legenda(m):
-        # o Python-Markdown transforma *a **b** c* em <em>a </em><em>b</em><em> c</em>: o trecho do meio era negrito
         legenda = re.sub(r"</em><em>(.*?)</em><em>", r"<strong>\1</strong>", m.group(2), flags=re.S)
         return f"<figure>{m.group(1)}<figcaption>{legenda}</figcaption></figure>"
 
@@ -100,7 +96,6 @@ def dividir_titulo(titulo: str) -> tuple[str, str]:
 def montar_html() -> str:
     secoes, sumario = [], []
 
-    # introdução: o README da pasta docs, sem a tabela de capítulos (o sumário faz esse papel)
     readme = (DOCS / "README.md").read_text(encoding="utf-8")
     readme = re.sub(r"## Ordem de leitura.*?(?=## Resumo)", "", readme, flags=re.S)
     _, corpo, _ = converter("00-introducao.md", readme)

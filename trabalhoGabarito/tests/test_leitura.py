@@ -18,11 +18,10 @@ MARCAS = [
     Marca(2, "C", cor=AZUL_CANETA),
     Marca(3, "D"),
     Marca(4, "B"),
-    Marca(4, "D"),  # 4: marcação dupla
-    Marca(5, "A", tipo="x"),  # 5: X no lugar de preencher
-    # 6: em branco
+    Marca(4, "D"),
+    Marca(5, "A", tipo="x"),
     Marca(7, "B", cor=AZUL_CANETA),
-    Marca(8, "C", tipo="parcial"),  # 8: só um pedaço preenchido
+    Marca(8, "C", tipo="parcial"),
 ]
 ESPERADO = {1: (R, "A"), 2: (R, "C"), 3: (R, "D"), 4: (MU, None), 5: (AM, None), 6: (B, None), 7: (R, "B"), 8: (AM, None)}
 

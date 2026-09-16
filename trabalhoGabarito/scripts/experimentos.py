@@ -15,9 +15,9 @@ import cv2
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-import pytest  # noqa: E402
+import pytest
 
-import gabarito.marcacoes as m  # noqa: E402
+import gabarito.marcacoes as m
 
 
 def sem_refinamento():

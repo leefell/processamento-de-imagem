@@ -44,14 +44,13 @@ def test_marcadores_ocupam_os_quatro_cantos_em_sentido_horario():
     cantos = layout.CANTOS_EXTERNOS
     assert set(cantos) == {0, 1, 2, 3}
     (x0, y0), (x1, y1), (x2, y2), (x3, y3) = (cantos[i] for i in range(4))
-    assert x0 < layout.LARGURA / 2 and y0 < layout.ALTURA / 2  # sup-esq
-    assert x1 > layout.LARGURA / 2 and y1 < layout.ALTURA / 2  # sup-dir
-    assert x2 > layout.LARGURA / 2 and y2 > layout.ALTURA / 2  # inf-dir
-    assert x3 < layout.LARGURA / 2 and y3 > layout.ALTURA / 2  # inf-esq
+    assert x0 < layout.LARGURA / 2 and y0 < layout.ALTURA / 2
+    assert x1 > layout.LARGURA / 2 and y1 < layout.ALTURA / 2
+    assert x2 > layout.LARGURA / 2 and y2 > layout.ALTURA / 2
+    assert x3 < layout.LARGURA / 2 and y3 > layout.ALTURA / 2
 
 
 def test_nada_encosta_na_zona_de_silencio_dos_marcadores():
-    # ArUco precisa de uma borda branca em volta para ser detectado.
     zonas = [layout.marcador(i).expandir(0.25) for i in range(4)]
     elementos = [layout.CAMPO_NOME, layout.CAMPO_CPF, layout.CAMPO_RG, layout.MOLDURA_GRADE, layout.RODAPE]
     elementos += [layout.celula(q, a) for q in layout.QUESTOES for a in layout.ALTERNATIVAS]

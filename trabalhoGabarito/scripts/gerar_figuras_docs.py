@@ -13,12 +13,12 @@ import numpy as np
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-from gabarito import layout, marcacoes  # noqa: E402
-from gabarito.alinhamento import alinhar  # noqa: E402
-from gabarito.folha import DICIONARIO_ARUCO, renderizar_folha  # noqa: E402
-from gabarito.leitura import ler_folha  # noqa: E402
-from gabarito.sintetico import AZUL_CANETA, Marca, folha_preenchida, fotografar  # noqa: E402
-from gabarito.visualizacao import desenhar_grade  # noqa: E402
+from gabarito import layout, marcacoes
+from gabarito.alinhamento import alinhar
+from gabarito.folha import DICIONARIO_ARUCO, renderizar_folha
+from gabarito.leitura import ler_folha
+from gabarito.sintetico import AZUL_CANETA, Marca, folha_preenchida, fotografar
+from gabarito.visualizacao import desenhar_grade
 
 DESTINO = RAIZ / "docs" / "img"
 
@@ -64,7 +64,7 @@ def lado_a_lado(*imgs: np.ndarray, espaco: int = 16) -> np.ndarray:
 
 def histograma(normalizada: np.ndarray, limiar_otsu: float, limiar: float) -> np.ndarray:
     hist = cv2.calcHist([normalizada], [0], None, [256], [0, 256]).ravel()
-    hist = np.log1p(hist)  # escala log: o papel tem muito mais pixels que a tinta
+    hist = np.log1p(hist)
     w, h, m = 768, 360, 40
     img = np.full((h + 2 * m, w + 2 * m, 3), 255, np.uint8)
     for v in range(256):
@@ -86,15 +86,12 @@ def main() -> None:
     DESTINO.mkdir(parents=True, exist_ok=True)
     print("Figuras:")
 
-    # 1. folha impressa
     salvar("01_folha_impressa.png", cv2.cvtColor(np.array(renderizar_folha(1)), cv2.COLOR_RGB2BGR), 620)
 
-    # 2. foto simulada
     folha = folha_preenchida(MARCAS, nome="JOAO PEDRO", cpf="123.456.789-09", rg="12.345.678-9", fatores_quadrados=(0.9, 1.1), seed=3)
     foto = fotografar(folha, rotacao=-12, perspectiva=0.06, sombra=0.55, desfoque=0.8, ruido=0.02, seed=7)
     salvar("02_foto.jpg", foto, 900)
 
-    # 3. marcadores detectados + cantos externos
     cinza = cv2.cvtColor(foto, cv2.COLOR_BGR2GRAY)
     detector = cv2.aruco.ArucoDetector(cv2.aruco.getPredefinedDictionary(DICIONARIO_ARUCO), cv2.aruco.DetectorParameters())
     cantos, ids, _ = detector.detectMarkers(cinza)
@@ -108,22 +105,19 @@ def main() -> None:
         cv2.putText(marcada, f"ID {i}", (int(ponto[0]) + 30, int(ponto[1]) + 60), cv2.FONT_HERSHEY_SIMPLEX, 2.2, (0, 0, 255), 6)
     salvar("03_marcadores_detectados.jpg", marcada, 900)
 
-    # 4. folha alinhada
     alinhada = alinhar(foto)
     salvar("04_folha_alinhada.png", alinhada, 620)
 
-    # 5. segmentação da tinta
     e = marcacoes.etapas_mascara(alinhada)
     salvar("05_canal_minimo.png", e.canal, 620)
     salvar("06_fundo_estimado.png", e.fundo, 620)
     salvar("07_normalizada.png", e.normalizada, 620)
     salvar("08_mascara_tinta.png", e.mascara, 620)
 
-    # 9. sem compensação de sombra (Otsu direto no canal), numa foto com sombra bem mais forte
     foto_sombra = fotografar(folha, rotacao=-12, perspectiva=0.06, sombra=0.75, seed=7)
     e_sombra = marcacoes.etapas_mascara(alinhar(foto_sombra))
     _, sem_compensar = cv2.threshold(e_sombra.canal, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    reduzir = lambda im: cv2.resize(im, None, fx=0.4, fy=0.4, interpolation=cv2.INTER_AREA)  # noqa: E731
+    reduzir = lambda im: cv2.resize(im, None, fx=0.4, fy=0.4, interpolation=cv2.INTER_AREA)
     comparacao = lado_a_lado(
         rotulo(reduzir(e_sombra.canal), "Canal (sombra forte)"),
         rotulo(reduzir(sem_compensar), "Otsu direto"),
@@ -133,15 +127,13 @@ def main() -> None:
           f"{np.count_nonzero(e_sombra.mascara) / e_sombra.mascara.size:.0%} com compensação)")
     salvar("09_comparacao_sombra.png", comparacao)
 
-    # 10. histograma
     salvar("10_histograma_otsu.png", histograma(e.normalizada, e.limiar_otsu, e.limiar))
 
-    # 11. canais de cor numa marca azul e numa preta
-    x0, y0, x1, y1 = 440, 590, 1040, 890  # questões 1–2
+    x0, y0, x1, y1 = 440, 590, 1040, 890
     crop = recorte(alinhada, x0, y0, x1, y1)
     b, g, r = cv2.split(crop)
     esc = 0.5
-    pequeno = lambda im: cv2.resize(im, None, fx=esc, fy=esc, interpolation=cv2.INTER_AREA)  # noqa: E731
+    pequeno = lambda im: cv2.resize(im, None, fx=esc, fy=esc, interpolation=cv2.INTER_AREA)
     salvar(
         "11_canais_de_cor.png",
         np.vstack(
@@ -153,7 +145,6 @@ def main() -> None:
         ),
     )
 
-    # 12. janela de busca, quadrado encontrado e região interna (questão 5, alternativa A = X)
     mascara_bgr = cv2.cvtColor(e.mascara, cv2.COLOR_GRAY2BGR)
     desenho = cv2.addWeighted(mascara_bgr, 0.35, np.full_like(mascara_bgr, 255), 0.65, 0)
     desenho[e.mascara > 0] = (40, 40, 40)
@@ -171,11 +162,9 @@ def main() -> None:
     c5 = layout.celula(5, "A").expandir(0.6)
     salvar("12_janela_de_busca.png", recorte(desenho, c5.x - 10, c5.y - 10, layout.celula(5, "D").x + 120, c5.y + c5.h + 40), 900)
 
-    # 13. grade detectada
     leitura = ler_folha(foto)
     salvar("13_grade_detectada.png", cv2.cvtColor(desenhar_grade(leitura), cv2.COLOR_RGB2BGR), 620)
 
-    # números para a documentação
     destino = np.float32([layout.CANTOS_EXTERNOS[i] for i in range(4)])
     h = cv2.getPerspectiveTransform(np.float32([origem[i] for i in range(4)]), destino)
     print("\nNúmeros:")

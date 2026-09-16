@@ -20,14 +20,14 @@ def _questao(n, estados):
 
 def _resultado():
     questoes = (
-        _questao(1, [M, V, V, V]),  # certa
-        _questao(2, [M, V, V, V]),  # errada (oficial B)
-        _questao(3, [V, V, M, V]),  # certa
-        _questao(4, [M, V, V, M]),  # anulada múltipla
-        _questao(5, [D, V, V, V]),  # anulada ambígua
-        _questao(6, [V, V, V, V]),  # em branco
-        _questao(7, [V, V, M, V]),  # certa
-        _questao(8, [V, V, V, M]),  # certa
+        _questao(1, [M, V, V, V]),
+        _questao(2, [M, V, V, V]),
+        _questao(3, [V, V, M, V]),
+        _questao(4, [M, V, V, M]),
+        _questao(5, [D, V, V, V]),
+        _questao(6, [V, V, V, V]),
+        _questao(7, [V, V, M, V]),
+        _questao(8, [V, V, V, M]),
     )
     return corrigir(OFICIAL, LeituraFolha(questoes, np.zeros((1, 1, 3), np.uint8)))
 

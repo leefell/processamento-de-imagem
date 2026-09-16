@@ -8,9 +8,9 @@ import numpy as np
 from gabarito.modelos import EstadoCelula, LeituraFolha
 
 CORES_RGB = {
-    EstadoCelula.MARCADO: (52, 199, 89),  # verde
-    EstadoCelula.DUVIDA: (255, 159, 10),  # laranja/amarelo
-    EstadoCelula.VAZIO: (174, 174, 178),  # cinza
+    EstadoCelula.MARCADO: (52, 199, 89),
+    EstadoCelula.DUVIDA: (255, 159, 10),
+    EstadoCelula.VAZIO: (174, 174, 178),
 }
 
 AFASTAMENTO = 3

@@ -13,7 +13,7 @@ import cv2
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-from gabarito.sintetico import AZUL_CANETA, FONTE_CURSIVA, FONTE_FORMA, Marca, folha_preenchida, fotografar  # noqa: E402
+from gabarito.sintetico import AZUL_CANETA, FONTE_CURSIVA, FONTE_FORMA, Marca, folha_preenchida, fotografar
 
 DESTINO = RAIZ / "amostras" / "sinteticas"
 
@@ -26,7 +26,6 @@ def respostas(letras: dict[int, str]) -> list[Marca]:
 
 
 AMOSTRAS = {
-    # nome: (marcas, esperado por questão, kwargs da folha, kwargs da foto)
     "00_mestre": (
         [Marca(q, a) for q, a in OFICIAL.items()],
         {str(q): a for q, a in OFICIAL.items()},
@@ -72,7 +71,6 @@ def main() -> None:
                 info[campo] = kw_folha[campo]
         (DESTINO / f"{nome}.json").write_text(json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"ok  {nome}.jpg")
-    # PDF "escaneado": a folha preenchida direto em PDF, sem efeitos de câmera
     respostas_pdf = {1: "B", 2: "D", 3: "A", 4: "C", 5: "A", 6: "A", 7: "D", 8: "B"}
     folha_pdf = folha_preenchida(respostas(respostas_pdf), nome="LUCAS MOREIRA", cpf="222.333.444-55", rg="22.333.444-5")
     folha_pdf.save(DESTINO / "05_aluno_escaneado.pdf", "PDF", resolution=300)

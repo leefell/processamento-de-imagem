@@ -17,10 +17,10 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
 
-from gabarito.alinhamento import ImagemInvalida, MarcadoresNaoEncontrados, carregar_imagem  # noqa: E402
-from gabarito.leitura import ler_folha  # noqa: E402
-from gabarito.modelos import StatusQuestao  # noqa: E402
-from gabarito.ocr import LeitorOCR  # noqa: E402
+from gabarito.alinhamento import ImagemInvalida, MarcadoresNaoEncontrados, carregar_imagem
+from gabarito.leitura import ler_folha
+from gabarito.modelos import StatusQuestao
+from gabarito.ocr import LeitorOCR
 
 EXTENSOES = {".jpg", ".jpeg", ".png", ".heic", ".heif", ".pdf"}
 
