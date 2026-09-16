@@ -10,7 +10,7 @@ imgMsgB = imgMsg(:, :, 3);
 for i=1:M
     for j=1:N
         msg(i,j)=bitget(imgMsgR(i,j),1);
-        endy
+    end
 end
 
 
