@@ -33,7 +33,7 @@ def ler_folha(
     if ocr is not None:
         try:
             identificacao = ocr(alinhada)
-        except Exception as erro:  # OCR é opcional: qualquer falha vira aviso
+        except Exception as erro:
             erro_ocr = f"Não foi possível ler Nome/CPF/RG: {erro}"
 
     return LeituraFolha(questoes, alinhada, identificacao, erro_ocr)

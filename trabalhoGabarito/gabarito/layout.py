@@ -13,14 +13,9 @@ ALTURA = 1754
 QUESTOES = range(1, 9)
 ALTERNATIVAS = ("A", "B", "C", "D")
 
-# Marcadores ArUco: lado e distância da borda do papel.
 MARCADOR_LADO = 100
 MARCADOR_MARGEM = 50
 
-# Cada marcador tem seu ID fixo; o canto "externo" (o mais próximo da quina do
-# papel) é o ponto usado na homografia. Os cantos do ArUco vêm em sentido
-# horário a partir do sup-esq do próprio marcador, então o canto externo do
-# marcador de ID i é justamente o seu canto de índice i.
 _ESQ = MARCADOR_MARGEM
 _DIR = LARGURA - MARCADOR_MARGEM
 _TOPO = MARCADOR_MARGEM
@@ -37,26 +32,21 @@ def marcador(id_marcador: int) -> Rect:
     return Rect(x, y, MARCADOR_LADO, MARCADOR_LADO)
 
 
-# Caixa de instruções logo abaixo do título.
 INSTRUCOES = Rect(200, 172, 840, 86)
 
-# Campos de identificação (área onde o aluno escreve).
 CAMPO_NOME = Rect(230, 285, 910, 80)
 CAMPO_CPF = Rect(230, 395, 420, 80)
 CAMPO_RG = Rect(780, 395, 360, 80)
 
-# Grade de respostas.
 CELULA_LADO = 72
 GRADE_X0 = 480
 GRADE_Y0 = 620
 PASSO_X = 150
 PASSO_Y = 118
 
-# Moldura decorativa em volta da grade e texto de rodapé.
 MOLDURA_GRADE = Rect(280, 520, 840, 1050)
 RODAPE = Rect(200, 1630, 840, 50)
 
-# Quanto a janela de busca do quadrado é maior que a célula (em cada lado).
 FOLGA_BUSCA = 0.30
 
 

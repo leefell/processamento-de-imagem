@@ -18,26 +18,25 @@ from gabarito import layout
 from gabarito.folha import renderizar_folha
 from gabarito.modelos import Rect
 
-PRETO_CANETA = (25, 25, 30)  # RGB
+PRETO_CANETA = (25, 25, 30)
 AZUL_CANETA = (30, 60, 160)
 
 FONTE_FORMA = "arial.ttf"
-FONTE_CURSIVA = "segoesc.ttf"  # Segoe Script (Windows)
+FONTE_CURSIVA = "segoesc.ttf"
 
 
 @dataclass(frozen=True)
 class Marca:
     questao: int
     alternativa: str
-    tipo: str = "cheio"  # cheio | x | traco | parcial
+    tipo: str = "cheio"
     cor: tuple[int, int, int] = PRETO_CANETA
 
 
 def _desenhar_marca(d: ImageDraw.ImageDraw, q: Rect, marca: Marca, rng: random.Random, s: int) -> None:
     x0, y0, x1, y1 = q.x, q.y, q.x + q.w, q.y + q.h
     if marca.tipo == "cheio":
-        # polígono com cantos irregulares + rabisco em zigue-zague, como caneta à mão
-        j = lambda: rng.uniform(2, 6) * s  # noqa: E731
+        j = lambda: rng.uniform(2, 6) * s
         d.polygon([(x0 + j(), y0 + j()), (x1 - j(), y0 + j()), (x1 - j(), y1 - j()), (x0 + j(), y1 - j())], fill=marca.cor)
         y = y0 + 4 * s
         while y < y1 - 4 * s:

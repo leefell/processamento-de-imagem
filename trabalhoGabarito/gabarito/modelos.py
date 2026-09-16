@@ -60,16 +60,16 @@ class Rect:
 class Celula:
     questao: int
     alternativa: str
-    preenchimento: float  # fração 0–1 de tinta na parte interna do quadrado
+    preenchimento: float
     estado: EstadoCelula
-    rect: Rect  # posição do quadrado encontrada na folha padrão
+    rect: Rect
 
 
 @dataclass(frozen=True)
 class Questao:
     numero: int
     status: StatusQuestao
-    letra: str | None  # só preenchida quando status == RESPONDIDA
+    letra: str | None
     celulas: tuple[Celula, ...]
 
     @property
@@ -81,7 +81,7 @@ class Questao:
 @dataclass(frozen=True)
 class CampoOCR:
     texto: str
-    confianca: float  # média 0–1 informada pelo OCR; 0 quando nada foi lido
+    confianca: float
 
 
 @dataclass(frozen=True)
@@ -94,7 +94,7 @@ class Identificacao:
 @dataclass(frozen=True)
 class LeituraFolha:
     questoes: tuple[Questao, ...]
-    alinhada: np.ndarray  # folha no tamanho padrão (BGR), usada na visualização
+    alinhada: np.ndarray
     identificacao: Identificacao | None = None
     erro_ocr: str | None = None
 

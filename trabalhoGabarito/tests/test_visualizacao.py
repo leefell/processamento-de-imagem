@@ -20,7 +20,7 @@ def test_grade_devolve_imagem_rgb_do_mesmo_tamanho():
     leitura, _ = _leitura_com(EstadoCelula.MARCADO)
     img = visualizacao.desenhar_grade(leitura)
     assert img.shape == leitura.alinhada.shape
-    assert leitura.alinhada.min() == 255  # não altera a original
+    assert leitura.alinhada.min() == 255
 
 
 def test_cor_do_contorno_depende_do_estado():

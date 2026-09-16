@@ -53,7 +53,6 @@ def renderizar_folha(escala: int = 2) -> Image.Image:
     _texto_centrado(d, (meio, 85 * s), "Folha de Respostas", _fonte(44 * s, negrito=True), PRETO)
     _texto_centrado(d, (meio, 135 * s), "Tópicos em Tecnologia da Informação", _fonte(22 * s), CINZA_TEXTO)
 
-    # Instruções
     instr = layout.INSTRUCOES
     d.rounded_rectangle(_escalar(instr, s), radius=16 * s, fill=FUNDO_INSTRUCAO)
     y_meio = instr.y + instr.h / 2
@@ -62,7 +61,6 @@ def renderizar_folha(escala: int = 2) -> Image.Image:
     _texto_centrado(d, (meio, (y_meio - 16) * s), frase1, _fonte(21 * s, negrito=True), PRETO)
     _texto_centrado(d, (meio, (y_meio + 16) * s), frase2, _fonte(21 * s), CINZA_TEXTO)
 
-    # Identificação
     fonte_rotulo = _fonte(26 * s, negrito=True)
     for rotulo, campo, x_rotulo in (
         ("Nome:", layout.CAMPO_NOME, 100),
@@ -72,7 +70,6 @@ def renderizar_folha(escala: int = 2) -> Image.Image:
         d.text((x_rotulo * s, (campo.y + campo.h / 2) * s), rotulo, font=fonte_rotulo, fill=PRETO, anchor="lm")
         d.rounded_rectangle(_escalar(campo, s), radius=10 * s, outline=CINZA_CAMPO, width=2 * s)
 
-    # Grade de respostas
     primeira = layout.celula(1, "A")
     d.rounded_rectangle(_escalar(layout.MOLDURA_GRADE, s), radius=20 * s, outline=CINZA_MOLDURA, width=2 * s)
 

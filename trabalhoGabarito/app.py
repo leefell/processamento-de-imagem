@@ -37,7 +37,6 @@ estado.setdefault("versao_aluno", 0)
 estado.setdefault("limite_marcado", round(LIMITE_MARCADO * 100))
 
 
-# ---------- pipeline com cache (o Streamlit reexecuta o script a cada interação) ----------
 @st.cache_resource(show_spinner=False)
 def leitor_ocr() -> LeitorOCR:
     return LeitorOCR()
@@ -71,7 +70,6 @@ def mostrar_processamento(dados: bytes, leitura) -> None:
         original.image(carregar_imagem(dados), channels="BGR", width="stretch")
 
 
-# ---------- cabeçalho ----------
 st.html(
     '<header class="cabecalho"><h1>Corretor de gabarito</h1>'
     "<p>Envie a foto ou o PDF da folha de respostas e veja na hora quantas questões o aluno acertou.</p></header>"
@@ -94,7 +92,6 @@ with st.expander("Ajustes avançados"):
 
 limite_marcado = estado.limite_marcado / 100
 
-# ---------- 1. gabarito oficial ----------
 passo(1, "Gabarito oficial")
 with st.container(key="grupo_oficial"):
     if estado.oficial is None:
@@ -108,11 +105,11 @@ with st.container(key="grupo_oficial"):
         if modo == MODO_MANUAL:
             st.html('<p class="dica">Marque a alternativa certa de cada questão.</p>')
             respostas: dict[int, str | None] = {}
-            for inicio in (1, 4, 7):  # sempre 3 colunas, para a última linha alinhar com as de cima
+            for inicio in (1, 4, 7):
                 colunas = st.columns(3)
                 for coluna, numero in zip(colunas, range(inicio, inicio + 3)):
                     if numero > 8:
-                        continue  # coluna sobrando na última linha: fica vazia, sem desalinhar
+                        continue
                     with coluna:
                         respostas[numero] = st.segmented_control(
                             f"Questão {numero}",
@@ -186,7 +183,6 @@ with st.container(key="grupo_oficial"):
             estado.versao_aluno += 1
             st.rerun()
 
-# ---------- 2. folha do aluno ----------
 tem_oficial = estado.oficial is not None
 passo(2, "Folha do aluno", ativo=tem_oficial)
 dados_aluno = None
@@ -201,7 +197,6 @@ with st.container(key="grupo_aluno"):
         if arquivo_aluno is not None:
             dados_aluno = arquivo_aluno.getvalue()
 
-# ---------- 3. resultado ----------
 if dados_aluno is not None:
     passo(3, "Resultado")
     with st.container(key="grupo_resultado"):
@@ -218,7 +213,6 @@ if dados_aluno is not None:
                 estado.versao_aluno += 1
                 st.rerun()
 
-# ---------- rodapé ----------
 st.html('<div style="height:2.5rem"></div>')
 st.download_button(
     "Baixar folha para imprimir",

@@ -16,13 +16,13 @@ def _bgr(img_pil):
 def test_carregar_imagem_aplica_orientacao_exif():
     retrato = Image.new("RGB", (40, 60), "white")
     exif = Image.Exif()
-    exif[0x0112] = 6  # "girar 90° no sentido horário" para exibir
+    exif[0x0112] = 6
     buffer = io.BytesIO()
     retrato.save(buffer, "JPEG", exif=exif)
 
     img = alinhamento.carregar_imagem(buffer.getvalue())
 
-    assert img.shape[:2] == (40, 60)  # altura e largura trocadas
+    assert img.shape[:2] == (40, 60)
 
 
 def test_carregar_imagem_rejeita_arquivo_que_nao_e_imagem():
@@ -43,20 +43,20 @@ def test_carregar_pdf_renderiza_a_pagina_e_os_marcadores_sao_encontrados(tmp_pat
 
     for origem in (dados, caminho, str(caminho)):
         img = alinhamento.carregar_imagem(origem)
-        assert img.ndim == 3 and img.shape[0] > img.shape[1]  # A4 em pé
+        assert img.ndim == 3 and img.shape[0] > img.shape[1]
         assert alinhamento.alinhar(img).shape == (layout.ALTURA, layout.LARGURA, 3)
 
 
 def test_pdf_com_varias_paginas_usa_a_primeira():
     marcada = folha.renderizar_folha(2)
-    marcada.paste((0, 0, 0), (1000, 1300, 1100, 1400))  # algo só na 1ª página
+    marcada.paste((0, 0, 0), (1000, 1300, 1100, 1400))
     branca = Image.new("RGB", marcada.size, "white")
 
     img = alinhamento.carregar_imagem(_pdf(marcada, branca))
 
-    alinhada = alinhamento.alinhar(img)  # a página branca não tem marcadores: falharia
+    alinhada = alinhamento.alinhar(img)
     assert alinhada.shape == (layout.ALTURA, layout.LARGURA, 3)
-    assert alinhada[650:700, 500:550].mean() < 60  # o quadrado preto da 1ª página está lá
+    assert alinhada[650:700, 500:550].mean() < 60
 
 
 def test_pdf_corrompido_gera_imagem_invalida():

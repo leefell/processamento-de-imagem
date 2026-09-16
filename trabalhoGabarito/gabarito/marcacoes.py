@@ -10,21 +10,15 @@ import numpy as np
 from gabarito import layout
 from gabarito.modelos import Celula, EstadoCelula, Questao, Rect, StatusQuestao
 
-# Faixas de classificação (fração de tinta na parte interna do quadrado).
-LIMITE_VAZIO = 0.15  # até aqui: vazio
-LIMITE_MARCADO = 0.50  # a partir daqui: marcado; entre os dois: dúvida
+LIMITE_VAZIO = 0.15
+LIMITE_MARCADO = 0.50
 
-# Parte da borda ignorada em cada lado ao medir o preenchimento.
 MARGEM_INTERNA = 0.20
 
-# Tamanho aceito para o quadrado encontrado, relativo ao esperado.
 TAMANHO_MIN, TAMANHO_MAX = 0.75, 1.30
 
-# Limiar de tinta (após normalizar o fundo) fica preso nesta faixa, para uma folha
-# quase sem tinta não levar o Otsu a separar ruído do papel.
 LIMIAR_MIN, LIMIAR_MAX = 100, 200
 
-# Maior que qualquer mancha de tinta, para a dilatação "apagar" a tinta e sobrar o fundo.
 KERNEL_FUNDO = 101
 
 
@@ -32,16 +26,15 @@ KERNEL_FUNDO = 101
 class EtapasMascara:
     """Resultados intermediários da segmentação de tinta (usados também nas figuras da documentação)."""
 
-    canal: np.ndarray  # menor valor entre B, G e R de cada pixel
-    fundo: np.ndarray  # estimativa do papel sem tinta (iluminação)
-    normalizada: np.ndarray  # canal ÷ fundo: papel ≈ 255 mesmo na sombra
-    limiar_otsu: float  # limiar sugerido pelo Otsu
-    limiar: float  # limiar usado (Otsu preso entre LIMIAR_MIN e LIMIAR_MAX)
-    mascara: np.ndarray  # 255 = tinta, 0 = papel
+    canal: np.ndarray
+    fundo: np.ndarray
+    normalizada: np.ndarray
+    limiar_otsu: float
+    limiar: float
+    mascara: np.ndarray
 
 
 def etapas_mascara(folha_bgr: np.ndarray) -> EtapasMascara:
-    # Mínimo dos canais: papel é claro em todos; tinta azul tem R baixo, preta tem tudo baixo.
     canal = folha_bgr.min(axis=2) if folha_bgr.ndim == 3 else folha_bgr
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (KERNEL_FUNDO, KERNEL_FUNDO))
     fundo = cv2.GaussianBlur(cv2.dilate(canal, kernel), (0, 0), 15)

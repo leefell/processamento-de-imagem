@@ -16,13 +16,9 @@ from gabarito.folha import DICIONARIO_ARUCO
 
 register_heif_opener()
 
-# Fotos muito grandes são reduzidas só para detectar os marcadores (mais rápido e,
-# em geral, mais confiável); a homografia usa as coordenadas na resolução original.
 LADO_MAX_DETECCAO = 2000
 SUPERAMOSTRAGEM = 2
 
-# Resolução usada para transformar a página do PDF em imagem. 200 DPI dá uma folha A4
-# de ~1650 × 2340 px: acima da folha padrão (150 DPI), sem ficar pesado.
 DPI_PDF = 200
 
 
@@ -53,7 +49,6 @@ def _renderizar_pdf(origem: bytes | str | Path) -> Image.Image:
     try:
         if len(documento) == 0:
             raise ImagemInvalida("O PDF não tem nenhuma página.")
-        # O PDF mede em pontos (1/72 pol.): escala = DPI desejado / 72.
         return documento[0].render(scale=DPI_PDF / 72).to_pil().convert("RGB")
     finally:
         documento.close()
@@ -87,7 +82,6 @@ def _detectar_cantos(cinza: np.ndarray, fator: float) -> dict[int, np.ndarray]:
     encontrados = {}
     for id_marcador, c in zip(ids.ravel().tolist(), cantos):
         if id_marcador in layout.CANTOS_EXTERNOS and id_marcador not in encontrados:
-            # canto externo do marcador i é o seu canto de índice i (ver layout.py)
             encontrados[id_marcador] = c.reshape(4, 2)[id_marcador] / fator
     return encontrados
 
@@ -106,8 +100,6 @@ def alinhar(imagem_bgr: np.ndarray) -> np.ndarray:
     if faltando:
         raise MarcadoresNaoEncontrados(faltando)
 
-    # warpPerspective não suporta INTER_AREA: gera a folha com o dobro do tamanho
-    # (interpolação linear) e reduz com INTER_AREA, evitando serrilhar linhas finas.
     origem = np.float32([encontrados[i] for i in range(4)])
     destino = np.float32([layout.CANTOS_EXTERNOS[i] for i in range(4)]) * SUPERAMOSTRAGEM
     homografia = cv2.getPerspectiveTransform(origem, destino)

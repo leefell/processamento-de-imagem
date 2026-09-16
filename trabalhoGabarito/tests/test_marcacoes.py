@@ -7,7 +7,7 @@ from gabarito.modelos import EstadoCelula, Rect, StatusQuestao
 
 V, D, M = EstadoCelula.VAZIO, EstadoCelula.DUVIDA, EstadoCelula.MARCADO
 
-AZUL_CANETA = (160, 60, 30)  # BGR
+AZUL_CANETA = (160, 60, 30)
 
 
 def _folha_padrao() -> np.ndarray:
@@ -83,8 +83,6 @@ def test_le_preenchimento_preto_azul_multiplo_e_x():
 
 
 def test_papel_liso_com_ruido_nao_vira_tinta():
-    # Sem tinta nenhuma, o Otsu ainda escolhe um corte e separaria o ruído do papel em
-    # "claro" e "escuro". A trava LIMIAR_MIN/LIMIAR_MAX impede que isso vire tinta.
     rng = np.random.default_rng(0)
     papel = np.clip(235 + rng.normal(0, 4, (400, 400, 3)), 0, 255).astype(np.uint8)
     mascara = marcacoes.mascara_tinta(papel)

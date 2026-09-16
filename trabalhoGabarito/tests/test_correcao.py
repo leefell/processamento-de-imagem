@@ -63,14 +63,14 @@ def test_gabarito_de_leitura_rejeita_questoes_sem_marcacao_unica():
 def test_corrigir_conta_certas_erradas_brancos_e_anuladas():
     aluno = _leitura(
         {
-            1: "A",  # certa
-            2: "B",  # certa
-            3: "A",  # errada
+            1: "A",
+            2: "B",
+            3: "A",
             4: StatusQuestao.ANULADA_MULTIPLA,
             5: StatusQuestao.ANULADA_AMBIGUA,
             6: StatusQuestao.EM_BRANCO,
-            7: "C",  # certa
-            8: "C",  # errada
+            7: "C",
+            8: "C",
         }
     )
 

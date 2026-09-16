@@ -12,7 +12,6 @@ IDIOMAS = ["pt"]
 ALLOWLIST_CPF = "0123456789.-"
 ALLOWLIST_RG = "0123456789.-Xx"
 
-# Pixels descartados em cada lado do campo para a borda impressa não virar "texto".
 MARGEM_CAMPO = 8
 AMPLIACAO = 2
 
@@ -56,7 +55,7 @@ class LeitorOCR:
 
     def _leitor(self):
         if self._reader is None:
-            import easyocr  # import tardio: puxa o PyTorch
+            import easyocr
 
             self._reader = easyocr.Reader(IDIOMAS, gpu=False, verbose=False)
         return self._reader

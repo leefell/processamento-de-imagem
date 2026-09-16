@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from gabarito.folha import folha_pdf_bytes, renderizar_folha  # noqa: E402
+from gabarito.folha import folha_pdf_bytes, renderizar_folha
 
 saida = Path(sys.argv[1] if len(sys.argv) > 1 else "folha_de_respostas.pdf")
 saida.write_bytes(folha_pdf_bytes())

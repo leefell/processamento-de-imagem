@@ -14,8 +14,8 @@ def test_recorte_do_campo_ignora_a_borda_e_amplia():
     recorte = ocr.recortar_campo(folha, c)
 
     assert recorte.ndim == 2
-    assert recorte.shape[0] > c.h  # ampliado
-    assert recorte.min() == 255  # a borda impressa não entra no recorte
+    assert recorte.shape[0] > c.h
+    assert recorte.min() == 255
 
 
 def test_juntar_fragmentos_ordena_da_esquerda_para_a_direita_e_tira_media():
